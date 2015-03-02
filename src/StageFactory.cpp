@@ -91,6 +91,7 @@ MAKE_FILTER_CREATOR(Transformation, pdal::TransformationFilter)
 //
 MAKE_WRITER_CREATOR(BpfWriter, pdal::BpfWriter)
 MAKE_WRITER_CREATOR(LasWriter, pdal::LasWriter)
+MAKE_WRITER_CREATOR(RialtoWriter, pdal::RialtoWriter)
 MAKE_WRITER_CREATOR(SbetWriter, pdal::SbetWriter)
 MAKE_WRITER_CREATOR(TextWriter, pdal::TextWriter)
 
@@ -164,6 +165,7 @@ std::string StageFactory::inferWriterDriver(const std::string& filename)
         drivers["pcd"] = "writers.pcd";
     if (f.getWriterCreator("writers.pclvisualizer"))
         drivers["pclviz"] = "writers.pclvisualizer";
+    drivers["ria"] = "writers.rialto";
     drivers["sbet"] = "writers.sbet";
     drivers["csv"] = "writers.text";
     drivers["json"] = "writers.text";
@@ -337,6 +339,7 @@ void StageFactory::registerKnownWriters()
 {
     REGISTER_WRITER(BpfWriter, pdal::BpfWriter);
     REGISTER_WRITER(LasWriter, pdal::LasWriter);
+    REGISTER_WRITER(RialtoWriter, pdal::RialtoWriter);
     REGISTER_WRITER(SbetWriter, pdal::SbetWriter);
     REGISTER_WRITER(TextWriter, pdal::TextWriter);
 }

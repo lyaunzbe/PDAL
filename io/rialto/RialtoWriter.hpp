@@ -1,5 +1,5 @@
 /******************************************************************************
-* Copyright (c) 2014, Howard Butler, hobu.inc@gmail.com
+* Copyright (c) 2014-2015, RadiantBlue Technologies, Inc.
 *
 * All rights reserved.
 *
@@ -34,21 +34,50 @@
 
 #pragma once
 
-#include <pdal/pdal_config.hpp>
+#include <pdal/pdal_export.hpp>
+#include <pdal/Stage.hpp>
+#include <pdal/Writer.hpp>
 
-#include <pdal/BufferReader.hpp>
-#include <faux/FauxReader.hpp>
+#include "RialtoCommon.hpp"
 
-#include <las/LasReader.hpp>
-#include <las/LasWriter.hpp>
+#include <cstdint>
 
-#include <bpf/BpfReader.hpp>
-#include <bpf/BpfWriter.hpp>
+namespace pdal
+{
 
-#include <sbet/SbetReader.hpp>
-#include <sbet/SbetWriter.hpp>
-#include <rialto/RialtoWriter.hpp>
-#include <qfit/QfitReader.hpp>
-#include <terrasolid/TerrasolidReader.hpp>
-#include <text/TextWriter.hpp>
+class Options;
+class PointBuffer;
+class Tile;
+
+class PDAL_DLL RialtoWriter : public Writer
+{
+public:
+    SET_STAGE_NAME("writers.rialto", "Rialto Writer")
+    SET_STAGE_LINK("http://pdal.io/stages/writers.rialto.html")
+
+    RialtoWriter()
+        {}
+
+    static Options getDefaultOptions();
+
+private:
+    virtual void processOptions(const Options& options);
+    virtual void ready(PointContextRef ctx);
+    virtual void write(const PointBuffer& buf);
+    virtual void done(PointContextRef ctx);
+
+    int32_t m_bytesPerPoint;
+    int32_t m_maxLevel;
+    int32_t m_numTilesX;
+    int32_t m_numTilesY;
+    bool m_overwrite;
+    Rectangle m_rectangle;
+    Tile** m_roots;
+    PointContext m_context;
+
+    RialtoWriter& operator=(const RialtoWriter&); // not implemented
+    RialtoWriter(const RialtoWriter&); // not implemented
+};
+
+} // namespace pdal
 

@@ -204,17 +204,17 @@ Stage* TranslateKernel::makeTranslate(Options translateOptions, Stage* reader_st
 
         bool bHaveReprojection = extra_opts.find("filters.reprojection") != extra_opts.end();
         bool bHaveCrop = extra_opts.find("filters.crop") != extra_opts.end();
-
         if (!m_output_srs.empty())
         {
             translateOptions.add("out_srs", m_output_srs.getWKT());
             reprojection_stage =
                 new ReprojectionFilter();
             reprojection_stage->setInput(next_stage);
-            reprojection_stage->setOptions(readerOptions);
+            reprojection_stage->setOptions(translateOptions);
             next_stage = reprojection_stage;
         } else if (bHaveReprojection)
         {
+        std::cerr << "empty\n";
             reprojection_stage =
                 new ReprojectionFilter();
             reprojection_stage->setInput(next_stage);
